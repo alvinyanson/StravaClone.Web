@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
     public class ClubController : Controller
     {
         private readonly IClubRepository _clubRepository;
+        private readonly IPhotoService _photoService;
 
-        public ClubController(IClubRepository clubRepository)
+        public ClubController(IClubRepository clubRepository, IPhotoService photoService)
         {
             _clubRepository = clubRepository;
+            _photoService = photoService;
         }
 
         public async Task<IActionResult> Index()
@@ -33,16 +36,36 @@ namespace StravaClone.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Club club)
+        public async Task<IActionResult> Create(CreateClubViewModel request)
         {
-            if(!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(club);
+
+                var result = await _photoService.AddPhotoAsync(request.Image);
+
+                var club = new Club
+                {
+                    Title = request.Title,
+                    Description = request.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        Street = request.Address.Street,
+                        City = request.Address.City,
+                        State = request.Address.State
+                    }
+                };
+
+                _clubRepository.Add(club);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Photo Upload Failed");
             }
 
-            _clubRepository.Add(club);
-
-            return RedirectToAction(nameof(Index));
+            return View(request);
         }
     }
 }

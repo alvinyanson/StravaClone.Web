@@ -1,16 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.Repository;
+using StravaClone.Web.Services;
+using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
     public class RaceController : Controller
     {
         private readonly IRaceRepository _raceRepository;
+        private readonly IPhotoService _photoService;
 
-        public RaceController(IRaceRepository raceRepository)
+        public RaceController(IRaceRepository raceRepository, IPhotoService photoService)
         {
             _raceRepository = raceRepository;
+            _photoService = photoService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,16 +33,36 @@ namespace StravaClone.Web.Controllers
             return View(club);
         }
 
-        public IActionResult Create(Race race)
+        public async Task<IActionResult> Create(CreateRaceViewModel request)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(race);
+
+                var result = await _photoService.AddPhotoAsync(request.Image);
+
+                var race = new Race
+                {
+                    Title = request.Title,
+                    Description = request.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        Street = request.Address.Street,
+                        City = request.Address.City,
+                        State = request.Address.State
+                    }
+                };
+
+                _raceRepository.Add(race);
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Photo Upload Failed");
             }
 
-            _raceRepository.Add(race);
-
-            return RedirectToAction(nameof(Index));
+            return View(request);
         }
     }
 }

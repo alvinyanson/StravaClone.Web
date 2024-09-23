@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using StravaClone.Web.Data;
+using StravaClone.Web.Helpers;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Repository;
+using StravaClone.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IRaceRepository, RaceRepository>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings")); // allows us to have IOptions
 
 var app = builder.Build();
 
