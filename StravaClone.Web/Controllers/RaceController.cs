@@ -19,5 +19,12 @@ namespace StravaClone.Web.Controllers
 
             return View(races);
         }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var club = await _context.Races.Include(a => a.Address).FirstOrDefaultAsync(c => c.Id == id);
+
+            return View(club);
+        }
     }
 }
