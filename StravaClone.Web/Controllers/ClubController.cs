@@ -1,28 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StravaClone.Web.Data;
+using StravaClone.Web.Interfaces;
 
 namespace StravaClone.Web.Controllers
 {
     public class ClubController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IClubRepository _clubRepository;
 
-        public ClubController(ApplicationDbContext context)
+        public ClubController(IClubRepository clubRepository)
         {
-            _context = context;
+            _clubRepository = clubRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var clubs = await _context.Clubs.ToListAsync();
+            var clubs = await _clubRepository.GetAllAsync();
 
             return View(clubs);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            var club = await _context.Clubs.Include(a => a.Address).FirstOrDefaultAsync(c => c.Id == id);
+            var club = await _clubRepository.GetByIdAsync(id);
 
             return View(club);
         }
