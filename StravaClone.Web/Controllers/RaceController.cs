@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
+using StravaClone.Web.Models;
 
 namespace StravaClone.Web.Controllers
 {
@@ -24,6 +25,18 @@ namespace StravaClone.Web.Controllers
             var club = await _raceRepository.GetByIdAsync(id);
 
             return View(club);
+        }
+
+        public IActionResult Create(Race race)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(race);
+            }
+
+            _raceRepository.Add(race);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
