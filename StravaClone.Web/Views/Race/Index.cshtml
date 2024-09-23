@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Race>
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            @foreach (var race in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="@race.Image" class="card-img-top" alt="@race.Title">
+
+                        <div class="card-body">
+                            <h5 class="card-title">@race.Title</h5>
+                            <p class="card-text">
+                                @race.Description
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-muted">@race.StartTime</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
