@@ -2,6 +2,7 @@
 {
     public class AppUser
     {
+        public string Id { get; set; }
         public int? Pace { get; set; }
         public int? MileAge { get; set; }
         public Address? Address { get; set; }
