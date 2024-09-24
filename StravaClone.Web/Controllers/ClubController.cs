@@ -67,5 +67,68 @@ namespace StravaClone.Web.Controllers
 
             return View(request);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var club = await _clubRepository.GetByIdAsync(id);
+
+            if (club == null) return View("Error");
+
+            var clubVM = new EditClubViewModel
+            {
+                Title = club.Title,
+                Description = club.Description,
+                AddressId = club.AddressId,
+                Address = club.Address,
+                URL = club.Image,
+                ClubCategory = club.ClubCategory,
+            };
+
+            return View(clubVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditClubViewModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit club");
+                return View(nameof(Edit), request);
+            }
+
+            var userClub = await _clubRepository.GetByIdAsyncNoTracking(id);
+
+            if (userClub == null)
+            {
+                return View(request);
+            }
+
+            try
+            {
+                await _photoService.DeletePhotoAsync(userClub.Image);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Could not delete photo");
+                return View(request);
+            }
+
+            var photoResult = await _photoService.AddPhotoAsync(request.Image);
+
+            var club = new Club
+            {
+                Id = id,
+                Title = request.Title,
+                Description = request.Description,
+                Image = photoResult.Url.ToString(),
+                AddressId = request.AddressId,
+                Address = request.Address
+            };
+
+            _clubRepository.Update(club);
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

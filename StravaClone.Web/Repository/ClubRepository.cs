@@ -40,6 +40,13 @@ namespace StravaClone.Web.Repository
             return club;
         }
 
+        public async Task<Club> GetByIdAsyncNoTracking(int id)
+        {
+            var club = await _context.Clubs.Include(c => c.Address).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+            return club;
+        }
+
         public async Task<IEnumerable<Club>> GetClubsByCityAsync(string city)
         {
             var club = await _context.Clubs.Where(x => x.Address.City.Contains(city)).ToListAsync();
