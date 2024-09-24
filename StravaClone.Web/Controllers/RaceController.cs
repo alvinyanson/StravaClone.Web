@@ -126,5 +126,27 @@ namespace StravaClone.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var raceDetail = await _raceRepository.GetByIdAsync(id);
+
+            if (raceDetail == null) return View("Error");
+
+            return View(raceDetail);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRace(int id)
+        {
+            var raceDetail = await _raceRepository.GetByIdAsync(id);
+
+            if (raceDetail == null) return View("Error");
+
+            _raceRepository.Delete(raceDetail);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
