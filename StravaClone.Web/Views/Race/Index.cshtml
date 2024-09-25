@@ -1,34 +1,38 @@
 ﻿@model IEnumerable<Race>
 
-<div class="album py-5 bg-light">
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">All Races</h1>
+            <p class="lead text-muted">Chase the Finish Line: Sign Up, Compete, Celebrate Your Achievements!</p>
+        </div>
+    </div>
+</section>
+
+
+<section>
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row mb-2">
             @foreach (var race in Model)
             {
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="@race.Image" class="card-img-top" alt="@race.Title">
-
-                        <div class="card-body">
-                            <h5 class="card-title">@race.Title</h5>
-                            <p class="card-text">
-                                @race.Description
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a asp-controller="Race" asp-action="Detail" asp-route-id="@race.Id" type="button" class="btn btn-sm btn-outline-secondary">View</a>
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a asp-controller="Race" asp-action="Edit" asp-route-id="@race.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        <a asp-controller="Race" asp-action="Delete" asp-route-id="@race.Id" class="btn btn-sm btn-danger">Delete</a>
-                                    }
-                                </div>
-                                <small class="text-muted">@race.StartTime</small>
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">@race.Title - @race.RaceCategory</strong>
+                            <div class="mb-1 text-muted">@race.Address.Street, @race.Address.City, @race.Address.State</div>
+                            <p class="card-text mb-auto">@race.Description</p>
+                            <div class="d-flex">
+                                <a asp-controller="Race" asp-action="Detail" asp-route-id="@race.Id">View</a>
+                                <a asp-controller="Race" asp-action="Edit" asp-route-id="@race.Id" class="mx-3">Edit</a>
+                                <a asp-controller="Race" asp-action="Delete" asp-route-id="@race.Id">Delete</a>
                             </div>
+                        </div>
+                        <div class="col-auto d-none d-lg-block">
+                            <img class="object-fit-cover" width="200" height="250" src="@race.Image" alt="Card image cap">
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-</div>
+</section>

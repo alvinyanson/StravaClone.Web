@@ -61,6 +61,7 @@ namespace StravaClone.Web.Controllers
                     Description = request.Description,
                     Image = result.Url.ToString(),
                     AppUserId = request.AppUserId,
+                    ClubCategory = request.ClubCategory,
                     Address = new Address
                     {
                         Street = request.Address.Street,
@@ -135,7 +136,8 @@ namespace StravaClone.Web.Controllers
                 Description = request.Description,
                 Image = photoResult.Url.ToString(),
                 AddressId = request.AddressId,
-                Address = request.Address
+                Address = request.Address,
+                ClubCategory = request.ClubCategory,
             };
 
             _clubRepository.Update(club);

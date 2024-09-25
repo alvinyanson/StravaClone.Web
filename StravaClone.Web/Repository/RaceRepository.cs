@@ -30,7 +30,7 @@ namespace StravaClone.Web.Repository
 
         public async Task<IEnumerable<Race>> GetAllAsync()
         {
-            return await _context.Races.ToListAsync();
+            return await _context.Races.Include(c => c.Address).ToListAsync();
         }
 
         public async Task<Race> GetByIdAsync(int id)
@@ -49,7 +49,7 @@ namespace StravaClone.Web.Repository
 
         public async Task<IEnumerable<Club>> GetRacesByCityAsync(string city)
         {
-            var club = await _context.Clubs.Where(x => x.Address.City.Contains(city)).ToListAsync();
+            var club = await _context.Clubs.Where(x => x.Address.City.Contains(city)).Include(c => c.Address).ToListAsync();
 
             return club;
         }

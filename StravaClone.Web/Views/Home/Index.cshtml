@@ -5,66 +5,47 @@
 }
 
 
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Clubs Near Me</h1>
+            @if (Model.Clubs == null)
+            {
+                <p class="lead text-muted">There are no running clubs in your area!</p>
+            }
+            else
+            {
+                <p class="lead text-muted">Running clubs near @Model.City, @Model.State</p>
+            }
+            <p>
+                <a asp-area="" asp-controller="Race" asp-action="Index" class="btn btn-primary my-2">Browse Races</a>
+                <a asp-area="" asp-controller="Club" asp-action="Index" class="btn btn-secondary my-2">Browse Clubs</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+
 <section>
     <div class="container">
-        @if (Model.Clubs == null)
-        {
-            <h1 class="fw-light">
-                There are no running clubs in your area! <a asp-area="" asp-controller="Account"
-                                                            asp-action="Login">Login</a> and create one!
-            </h1>
-        }
-        else
-        {
-            <div class="row justify-content-between mb-5">
-                <div class="col-auto">
-                    <h3>Running clubs near @Model.City, @Model.State</h3>
-                </div>
-                <!--end of col-->
-                <div class="col-auto">
-                    <a href="#" class="btn btn-outline-primary">View all</a>
-                </div>
-                <!--end of col-->
-            </div>
-            <ul class="row feature-list feature-list-sm">
-                @foreach (var item in Model.Clubs)
-                {
-                    <li class="col-12 col-md-6 col-lg-4">
-                        <div class="card">
-                            <a href="#">
-                                <img class="card-img-top" src="@item.Image" alt="Card image cap">
-                            </a>
-                            <div class="card-body">
-                                <a href="#">
-                                    <h4 class="card-title">@item.Title</h4>
-                                    <p class="card-text text-body">@item.Description</p>
-                                </a>
-                            </div>
-                            <div class="card-footer card-footer-borderless d-flex justify-content-between">
-                                <div class="text-small">
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item"><i class="icon-heart"></i> 221</li>
-                                        <li class="list-inline-item"><i class="icon-message"></i> 14</li>
-                                    </ul>
-                                </div>
-                                <div class="dropup">
-                                    <a type="btn btn-success" asp-controller="Club" asp-action="Detail" asp-route-id="@item.Id"
-                                       class="btn btn-sm btn-outline-secondary">View</a>
-                                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="SidekickButton">
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Share</a>
-                                        <a class="dropdown-item" href="#">Comment</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="row mb-2">
+            @foreach (var item in Model.Clubs)
+            {
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">@item.Title - @item.ClubCategory</strong>
+                            <div class="mb-1 text-muted">@item.Address.Street, @item.Address.City, @item.Address.State</div>
+                            <p class="card-text mb-auto">@item.Description</p>
+                            <a asp-controller="Club" asp-action="Detail" asp-route-id="@item.Id" class="stretched-link">View Club</a>
                         </div>
-                    </li>
-                }
-            </ul>
-        }
-        <!--end of row-->
+                        <div class="col-auto d-none d-lg-block">
+                            <img class="object-fit-cover" width="200" height="250" src="@item.Image" alt="Card image cap">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
     <!--end of container-->
 </section>

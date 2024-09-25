@@ -1,38 +1,41 @@
 ﻿@model IEnumerable<Club>
 
 
-<div class="album py-5 bg-light">
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">All Clubs</h1>
+            <p class="lead text-muted">Unite. Run. Conquer: Join a Community that Inspires Your Journey!</p>
+        </div>
+    </div>
+</section>
+
+<section>
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row mb-2">
             @foreach (var club in Model)
             {
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="@club.Image" class="card-img-top" alt="@club.Title">
-
-                        <div class="card-body">
-                            <h5 class="card-title">@club.Title</h5>
-                            <p class="card-text">
-                                @club.Description
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a asp-controller="Club" asp-action="Detail" asp-route-id="@club.Id" class="btn btn-sm btn-outline-secondary">View</a>
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id" class="btn btn-sm btn-danger">Delete</a>
-                                    }
-                                </div>
-                                <small class="text-muted">@club.ClubCategory</small>
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">@club.Title - @club.ClubCategory</strong>
+                            <div class="mb-1 text-muted">@club.Address.Street, @club.Address.City, @club.Address.State</div>
+                            <p class="card-text mb-auto">@club.Description</p>
+                            <div class="d-flex">
+                                <a asp-controller="Club" asp-action="Detail" asp-route-id="@club.Id">View</a>
+                                <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="mx-3">Edit</a>
+                                <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id">Delete</a>
                             </div>
+                        </div>
+                        <div class="col-auto d-none d-lg-block">
+                            <img class="object-fit-cover" width="200" height="250" src="@club.Image" alt="Card image cap">
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-</div>
+</section>
 
 
 
