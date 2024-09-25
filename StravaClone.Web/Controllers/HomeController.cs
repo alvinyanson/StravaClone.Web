@@ -1,20 +1,59 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using StravaClone.Web.Helpers;
+using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.ViewModels;
 using System.Diagnostics;
+using System.Globalization;
+using System.Net;
 
 namespace StravaClone.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IClubRepository _clubRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IClubRepository clubRepository)
         {
             _logger = logger;
+            _clubRepository = clubRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var ipInfo = new IPInfo();
+            var homeViewModel = new HomeViewModel();
+
+            try
+            {
+                string url = "https://ipinfo.io?token=3f5ade860febf1";
+                var info = new WebClient().DownloadString(url);
+
+                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
+
+                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
+                ipInfo.Country = myRI1.EnglishName;
+                homeViewModel.City = ipInfo.City;
+                homeViewModel.State = ipInfo.Region;
+
+                if (homeViewModel.City != null)
+                {
+                    homeViewModel.Clubs = await _clubRepository.GetClubsByCityAsync(homeViewModel.City);
+                }
+                else
+                {
+                    homeViewModel.Clubs = null;
+                }
+
+                return View(homeViewModel);
+            }
+            catch (Exception ex)
+            {
+                homeViewModel.Clubs = null;
+            }
+
             return View();
         }
 
