@@ -7,6 +7,9 @@ namespace StravaClone.Web.Models
     {
         public int? Pace { get; set; }
         public int? MileAge { get; set; }
+        public string? ProfileImageUrl { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
         [ForeignKey(nameof(Address))]
         public int? AddressId { get; set; }
         public Address? Address { get; set; }
