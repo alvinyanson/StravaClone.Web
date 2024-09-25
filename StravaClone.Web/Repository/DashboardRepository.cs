@@ -17,7 +17,7 @@ namespace StravaClone.Web.Repository
 
         public async Task<List<Club>> GetAllUserClubs()
         {
-            var currentUser = _httpContextAccessor.HttpContext?.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
 
             var userClubs = _context.Clubs.Where(x => x.AppUser.Id == currentUser.ToString()).ToList();
 
@@ -26,7 +26,7 @@ namespace StravaClone.Web.Repository
 
         public async Task<List<Race>> GetAllUserRaces()
         {
-            var currentUser = _httpContextAccessor.HttpContext?.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
 
             var userRaces = _context.Races.Where(x => x.AppUser.Id == currentUser.ToString()).ToList();
 

@@ -1,6 +1,7 @@
 ﻿@model CreateRaceViewModel
 
 <form method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId" />
 
     <div class="mb-3">
         <label asp-for="Title" class="form-label">Title</label>

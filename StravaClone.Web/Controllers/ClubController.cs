@@ -9,11 +9,16 @@ namespace StravaClone.Web.Controllers
     {
         private readonly IClubRepository _clubRepository;
         private readonly IPhotoService _photoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ClubController(IClubRepository clubRepository, IPhotoService photoService)
+        public ClubController(
+            IClubRepository clubRepository,
+            IPhotoService photoService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _clubRepository = clubRepository;
             _photoService = photoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -32,7 +37,14 @@ namespace StravaClone.Web.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var userid = _httpContextAccessor.HttpContext.User.GetUserId();
+
+            var createClubViewModel = new CreateClubViewModel
+            {
+                AppUserId = userid,
+            };
+
+            return View(createClubViewModel);
         }
 
         [HttpPost]
@@ -48,6 +60,7 @@ namespace StravaClone.Web.Controllers
                     Title = request.Title,
                     Description = request.Description,
                     Image = result.Url.ToString(),
+                    AppUserId = request.AppUserId,
                     Address = new Address
                     {
                         Street = request.Address.Street,
@@ -134,8 +147,8 @@ namespace StravaClone.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var clubDetail = await _clubRepository.GetByIdAsync(id);
-            
-            if(clubDetail == null) return View("Error");
+
+            if (clubDetail == null) return View("Error");
 
             return View(clubDetail);
         }
