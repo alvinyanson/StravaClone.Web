@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
 using StravaClone.Web.ViewModels;
@@ -52,23 +53,10 @@ namespace StravaClone.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var result = await _photoService.AddPhotoAsync(request.Image);
 
-                var club = new Club
-                {
-                    Title = request.Title,
-                    Description = request.Description,
-                    Image = result.Url.ToString(),
-                    AppUserId = request.AppUserId,
-                    ClubCategory = request.ClubCategory,
-                    Address = new Address
-                    {
-                        Street = request.Address.Street,
-                        City = request.Address.City,
-                        State = request.Address.State
-                    }
-                };
+                var club = request.Adapt<Club>();
+                club.Image = result.Url.ToString();
 
                 _clubRepository.Add(club);
 
@@ -88,15 +76,7 @@ namespace StravaClone.Web.Controllers
 
             if (club == null) return View("Error");
 
-            var clubVM = new EditClubViewModel
-            {
-                Title = club.Title,
-                Description = club.Description,
-                AddressId = club.AddressId,
-                Address = club.Address,
-                URL = club.Image,
-                ClubCategory = club.ClubCategory,
-            };
+            var clubVM = club.Adapt<EditClubViewModel>();
 
             return View(clubVM);
         }
@@ -129,16 +109,8 @@ namespace StravaClone.Web.Controllers
 
             var photoResult = await _photoService.AddPhotoAsync(request.Image);
 
-            var club = new Club
-            {
-                Id = id,
-                Title = request.Title,
-                Description = request.Description,
-                Image = photoResult.Url.ToString(),
-                AddressId = request.AddressId,
-                Address = request.Address,
-                ClubCategory = request.ClubCategory,
-            };
+            var club = request.Adapt<Club>();
+            club.Image = photoResult.Url.ToString();
 
             _clubRepository.Update(club);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Data;
 using StravaClone.Web.Models;
@@ -81,11 +82,7 @@ namespace StravaClone.Web.Controllers
                 return View(registerViewModel);
             }
 
-            var newUser = new AppUser
-            {
-                Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress,
-            };
+            var newUser = registerViewModel.Adapt<AppUser>();
 
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 

@@ -9,7 +9,7 @@
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Clubs Near Me</h1>
-            @if (Model.Clubs == null)
+            @if (!Model.Clubs.Any())
             {
                 <p class="lead text-muted">There are no running clubs in your area!</p>
             }

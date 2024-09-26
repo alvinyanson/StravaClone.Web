@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
@@ -85,7 +86,6 @@ namespace StravaClone.Web.Controllers
 
             if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
             {
-
                 MapUserEdit(user, request, photoResult);
                 _dashboardRepository.Update(user);
 

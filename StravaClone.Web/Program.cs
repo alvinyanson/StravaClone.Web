@@ -5,6 +5,7 @@ using StravaClone.Web.Data;
 using StravaClone.Web.Helpers;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.Profiles;
 using StravaClone.Web.Repository;
 using StravaClone.Web.Services;
 
@@ -12,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.RegisterMapsterConfiguration();
 
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IRaceRepository, RaceRepository>();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.ViewModels;
 
@@ -22,16 +23,7 @@ namespace StravaClone.Web.Controllers
 
             foreach (var user in users)
             {
-                var userViewModel = new UserViewModel()
-                {
-                    Id = user.Id,
-                    Username = user.UserName,
-                    Pace = user.Pace,
-                    MileAge = user.MileAge,
-                    ProfileImageUrl = user.ProfileImageUrl,
-                    City = user.City,
-                    State = user.State,
-                };
+                var userViewModel = user.Adapt<UserViewModel>();
 
                 result.Add(userViewModel);
             }

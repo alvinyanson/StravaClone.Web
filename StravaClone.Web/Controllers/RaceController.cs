@@ -1,9 +1,7 @@
-﻿using Azure.Core;
+﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
-using StravaClone.Web.Repository;
-using StravaClone.Web.Services;
 using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
@@ -58,19 +56,8 @@ namespace StravaClone.Web.Controllers
 
                 var result = await _photoService.AddPhotoAsync(request.Image);
 
-                var race = new Race
-                {
-                    Title = request.Title,
-                    Description = request.Description,
-                    Image = result.Url.ToString(),
-                    AppUserId = request.AppUserId,
-                    Address = new Address
-                    {
-                        Street = request.Address.Street,
-                        City = request.Address.City,
-                        State = request.Address.State
-                    }
-                };
+                var race = request.Adapt<Race>();
+                race.Image = result.Url.ToString();
 
                 _raceRepository.Add(race);
 
@@ -90,15 +77,7 @@ namespace StravaClone.Web.Controllers
 
             if (race == null) return View("Error");
 
-            var clubVM = new EditRaceViewModel
-            {
-                Title = race.Title,
-                Description = race.Description,
-                AddressId = race.AddressId,
-                Address = race.Address,
-                URL = race.Image,
-                RaceCategory = race.RaceCategory,
-            };
+            var clubVM = race.Adapt<EditRaceViewModel>();
 
             return View(clubVM);
         }
@@ -131,15 +110,8 @@ namespace StravaClone.Web.Controllers
 
             var photoResult = await _photoService.AddPhotoAsync(request.Image);
 
-            var race = new Race
-            {
-                Id = id,
-                Title = request.Title,
-                Description = request.Description,
-                Image = photoResult.Url.ToString(),
-                AddressId = request.AddressId,
-                Address = request.Address
-            };
+            var race = request.Adapt<Race>();
+            race.Image = photoResult.Url.ToString();
 
             _raceRepository.Update(race);
 

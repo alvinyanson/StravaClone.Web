@@ -1,62 +1,78 @@
 ﻿@model Race
 
-<h1>Are you sure you want to delete this race?</h1>
-
-
-<form>
-    <input type="hidden" asp-for="AddressId" />
-
-    @* <div asp-validation-summary="ModelOnly"></div> *@
-
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label">Title</label>
-        <input readonly asp-for="Title" type="text" class="form-control" placeholder="Title">
-        <span asp-validation-for="Title" class="text-danger"></span>
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Delete Race</h1>
+        </div>
     </div>
+</section>
 
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label">Description</label>
-        <input readonly asp-for="Description" type="text" class="form-control" placeholder="Description">
-        <span asp-validation-for="Description" class="text-danger"></span>
+
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-7">
+                <form>
+                    <input type="hidden" asp-for="AddressId" />
+
+                    @* <div asp-validation-summary="ModelOnly"></div> *@
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Title</label>
+                        <input readonly asp-for="Title" type="text" class="form-control" placeholder="Title">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <input readonly asp-for="Description" type="text" class="form-control" placeholder="Description">
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RaceCategory" class="form-label">Race Category</label>
+                        <select disabled asp-for="RaceCategory" asp-items="@Html.GetEnumSelectList<RaceCategory>()" class="form-select">
+                            <option>--Select--</option>
+                        </select>
+                        <span asp-validation-for="RaceCategory" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address.Street" class="form-label">Street</label>
+                        <input readonly asp-for="Address.Street" type="text" class="form-control" placeholder="Street">
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address.City" class="form-label">City</label>
+                        <input readonly asp-for="Address.City" type="text" class="form-control" placeholder="City">
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address.State" class="form-label">State</label>
+                        <input readonly asp-for="Address.State" type="text" class="form-control" placeholder="State">
+                        <span asp-validation-for="Address.State" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Image" class="form-label">Image</label>
+                        <input readonly asp-for="Image" type="file" class="form-control" placeholder="Image">
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                </form>
+
+                <div class="mb-3">
+                    <form method="post" asp-action="DeleteRace">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger me-2">Confirm Delete</button>
+                        <a asp-controller="Race" asp-action="Index" type="button" class="btn btn-secondary">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="RaceCategory" class="form-label">Race Category</label>
-        <select disabled asp-for="RaceCategory" asp-items="@Html.GetEnumSelectList<RaceCategory>()" class="form-select">
-            <option>--Select--</option>
-        </select>
-        <span asp-validation-for="RaceCategory" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Address.Street" class="form-label">Street</label>
-        <input readonly asp-for="Address.Street" type="text" class="form-control" placeholder="Street">
-        <span asp-validation-for="Address.Street" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Address.City" class="form-label">City</label>
-        <input readonly asp-for="Address.City" type="text" class="form-control" placeholder="City">
-        <span asp-validation-for="Address.City" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Address.State" class="form-label">State</label>
-        <input readonly asp-for="Address.State" type="text" class="form-control" placeholder="State">
-        <span asp-validation-for="Address.State" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Image" class="form-label">Image</label>
-        <input readonly asp-for="Image" type="file" class="form-control" placeholder="Image">
-        <span asp-validation-for="Image" class="text-danger"></span>
-    </div>
-</form>
+</section>
 
 
-<div class="mb-3">
-    <form method="post" asp-action="DeleteRace">
-        <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">Confirm Delete</button>
-    </form>
-</div>
