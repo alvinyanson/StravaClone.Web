@@ -14,29 +14,28 @@ namespace StravaClone.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IClubRepository _clubRepository;
+        private readonly IIPInfoService _iPInfoService;
 
-        public HomeController(ILogger<HomeController> logger, IClubRepository clubRepository)
+        public HomeController(
+            ILogger<HomeController> logger, 
+            IClubRepository clubRepository,
+            IIPInfoService iPInfoService)
         {
             _logger = logger;
             _clubRepository = clubRepository;
+            _iPInfoService = iPInfoService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var ipInfo = new IPInfo();
             var homeViewModel = new HomeViewModel();
 
             try
             {
-                string url = "https://ipinfo.io?token=3f5ade860febf1";
-                var info = new WebClient().DownloadString(url);
+                var info = await _iPInfoService.GetIPInfo();
 
-                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
-
-                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
-                ipInfo.Country = myRI1.EnglishName;
-                homeViewModel.City = ipInfo.City;
-                homeViewModel.State = ipInfo.Region;
+                homeViewModel.City = info.City;
+                homeViewModel.State = info.Region;
 
                 if (homeViewModel.City != null)
                 {

@@ -33,6 +33,8 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
+builder.Services.AddHttpClient<IIPInfoService, IPInfoService>();
+
 var app = builder.Build();
 
 if(args.Length == 1 && args[0].ToLower() == "seeddata")
