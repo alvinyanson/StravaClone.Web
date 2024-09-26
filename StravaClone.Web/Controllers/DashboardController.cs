@@ -1,5 +1,4 @@
 ﻿using CloudinaryDotNet.Actions;
-using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
@@ -9,16 +8,16 @@ namespace StravaClone.Web.Controllers
 {
     public class DashboardController : Controller
     {
-        private readonly IDashboardRepository _dashboardRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPhotoService _photoService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DashboardController(
-            IDashboardRepository dashboardRepository,
+            IUnitOfWork unitOfWork,
             IHttpContextAccessor httpContextAccessor,
             IPhotoService photoService)
         {
-            _dashboardRepository = dashboardRepository;
+            _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
         }
@@ -37,8 +36,10 @@ namespace StravaClone.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userRaces = await _dashboardRepository.GetAllUserRaces();
-            var userClubs = await _dashboardRepository.GetAllUserClubs();
+            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            var userRaces = await _unitOfWork.Dashboard.GetAllUserRaces(currentUser.ToString());
+            var userClubs = await _unitOfWork.Dashboard.GetAllUserClubs(currentUser.ToString());
 
             var dashboardVM = new DashboardViewModel
             {
@@ -54,7 +55,7 @@ namespace StravaClone.Web.Controllers
         {
             var userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
-            var user = await _dashboardRepository.GetUserById(userId);
+            var user = await _unitOfWork.Dashboard.GetUserById(userId);
 
             if (user == null) return View("Error");
 
@@ -80,14 +81,14 @@ namespace StravaClone.Web.Controllers
                 return View(request);
             }
 
-            var user = await _dashboardRepository.GetByIdNoTracking(request.Id);
+            var user = await _unitOfWork.Dashboard.GetByIdNoTracking(request.Id);
             
             var photoResult = await _photoService.AddPhotoAsync(request.Image);
 
             if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
             {
                 MapUserEdit(user, request, photoResult);
-                _dashboardRepository.Update(user);
+                _unitOfWork.Dashboard.Update(user);
 
                 return RedirectToAction(nameof(Index));
 
@@ -111,8 +112,8 @@ namespace StravaClone.Web.Controllers
                 }
 
                 MapUserEdit(user, request, photoResult);
-                
-                _dashboardRepository.Update(user);
+
+                _unitOfWork.Dashboard.Update(user);
 
                 return RedirectToAction(nameof(Index));
             }

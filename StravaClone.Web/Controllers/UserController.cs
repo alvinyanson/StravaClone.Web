@@ -7,17 +7,18 @@ namespace StravaClone.Web.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(
+            IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
-            var users = await _userRepository.GetAllUsers();
+            var users = await _unitOfWork.User.GetAllUsers();
 
             List<UserViewModel> result = new List<UserViewModel>();
 
@@ -35,7 +36,7 @@ namespace StravaClone.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await _userRepository.GetUserById(id);
+            var user = await _unitOfWork.User.GetUserById(id);
 
             var userDetailViewModel = new UserDetailViewModel()
             {

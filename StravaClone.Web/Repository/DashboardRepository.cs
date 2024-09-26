@@ -8,28 +8,22 @@ namespace StravaClone.Web.Repository
     public class DashboardRepository : IDashboardRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DashboardRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public DashboardRepository(ApplicationDbContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<Club>> GetAllUserClubs()
+        public async Task<List<Club>> GetAllUserClubs(string userId)
         {
-            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            var userClubs = _context.Clubs.Where(x => x.AppUser.Id == currentUser.ToString()).ToList();
+            var userClubs = _context.Clubs.Where(x => x.AppUser.Id == userId).Include(x => x.Address).ToList();
 
             return userClubs.ToList();
         }
 
-        public async Task<List<Race>> GetAllUserRaces()
+        public async Task<List<Race>> GetAllUserRaces(string userId)
         {
-            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            var userRaces = _context.Races.Where(x => x.AppUser.Id == currentUser.ToString()).ToList();
+            var userRaces = _context.Races.Where(x => x.AppUser.Id == userId).Include(x => x.Address).ToList();
 
             return userRaces.ToList();
         }

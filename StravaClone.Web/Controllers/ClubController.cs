@@ -8,30 +8,30 @@ namespace StravaClone.Web.Controllers
 {
     public class ClubController : Controller
     {
-        private readonly IClubRepository _clubRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IPhotoService _photoService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ClubController(
-            IClubRepository clubRepository,
+            IUnitOfWork unitOfWork,
             IPhotoService photoService,
             IHttpContextAccessor httpContextAccessor)
         {
-            _clubRepository = clubRepository;
+            _unitOfWork = unitOfWork;
             _photoService = photoService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
         {
-            var clubs = await _clubRepository.GetAllAsync();
+            var clubs = await _unitOfWork.Club.GetAllAsync();
 
             return View(clubs);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            var club = await _clubRepository.GetByIdAsync(id);
+            var club = await _unitOfWork.Club.GetByIdAsync(id);
 
             return View(club);
         }
@@ -58,7 +58,7 @@ namespace StravaClone.Web.Controllers
                 var club = request.Adapt<Club>();
                 club.Image = result.Url.ToString();
 
-                _clubRepository.Add(club);
+                _unitOfWork.Club.Add(club);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,7 +72,7 @@ namespace StravaClone.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var club = await _clubRepository.GetByIdAsync(id);
+            var club = await _unitOfWork.Club.GetByIdAsync(id);
 
             if (club == null) return View("Error");
 
@@ -90,7 +90,7 @@ namespace StravaClone.Web.Controllers
                 return View(nameof(Edit), request);
             }
 
-            var userClub = await _clubRepository.GetByIdAsyncNoTracking(id);
+            var userClub = await _unitOfWork.Club.GetByIdAsyncNoTracking(id);
 
             if (userClub == null)
             {
@@ -112,7 +112,7 @@ namespace StravaClone.Web.Controllers
             var club = request.Adapt<Club>();
             club.Image = photoResult.Url.ToString();
 
-            _clubRepository.Update(club);
+            _unitOfWork.Club.Update(club);
 
             return RedirectToAction(nameof(Index));
         }
@@ -120,7 +120,7 @@ namespace StravaClone.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var clubDetail = await _clubRepository.GetByIdAsync(id);
+            var clubDetail = await _unitOfWork.Club.GetByIdAsync(id);
 
             if (clubDetail == null) return View("Error");
 
@@ -130,11 +130,11 @@ namespace StravaClone.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteClub(int id)
         {
-            var clubDetail = await _clubRepository.GetByIdAsync(id);
+            var clubDetail = await _unitOfWork.Club.GetByIdAsync(id);
 
             if (clubDetail == null) return View("Error");
 
-            _clubRepository.Delete(clubDetail);
+            _unitOfWork.Club.Delete(clubDetail);
 
             return RedirectToAction(nameof(Index));
         }

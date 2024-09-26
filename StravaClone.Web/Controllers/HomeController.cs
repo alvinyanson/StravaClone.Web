@@ -13,16 +13,16 @@ namespace StravaClone.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IClubRepository _clubRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IIPInfoService _iPInfoService;
 
         public HomeController(
-            ILogger<HomeController> logger, 
-            IClubRepository clubRepository,
+            ILogger<HomeController> logger,
+            IUnitOfWork unitOfWork,
             IIPInfoService iPInfoService)
         {
+            _unitOfWork = unitOfWork;
             _logger = logger;
-            _clubRepository = clubRepository;
             _iPInfoService = iPInfoService;
         }
 
@@ -39,7 +39,7 @@ namespace StravaClone.Web.Controllers
 
                 if (homeViewModel.City != null)
                 {
-                    homeViewModel.Clubs = await _clubRepository.GetClubsByCityAsync(homeViewModel.City);
+                    homeViewModel.Clubs = await _unitOfWork.Club.GetClubsByCityAsync(homeViewModel.City);
                 }
                 else
                 {
