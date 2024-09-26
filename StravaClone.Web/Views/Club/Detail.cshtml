@@ -12,17 +12,32 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <img class="img-fluid" src="@Model.Image" alt="">
+            <div class="col-md-5">
+                <img class="img-thumbnail" src="@Model.Image" alt="">
             </div>
 
-            <div class="col-md-4">
-                <h3 class="my-3">Details</h3>
-                <ul>
-                    <li>@Model.Address.City</li>
-                    <li>@Model.Address.State</li>
-                    <li>@Model.ClubCategory</li>
-                </ul>
+            <div class="col-md-7">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Street</th>
+                            <td>@Model.Address.Street</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">City</th>
+                            <td>@Model.Address.City</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">State</th>
+                            <td>@Model.Address.State</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Category</th>
+                            <td>@Model.ClubCategory</td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <a asp-controller="Club" asp-action="Index">Back</a>
             </div>
         </div>

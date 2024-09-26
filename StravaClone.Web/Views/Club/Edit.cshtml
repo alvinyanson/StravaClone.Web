@@ -11,24 +11,24 @@
 <section>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-7">
+            <div class="col-12 col-md-5">
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" asp-for="AddressId" />
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label">Title</label>
-                        <input asp-for="Title" type="text" class="form-control" placeholder="Title">
+                        <input asp-for="Title" type="text" class="form-control form-control-lg placeholder="Title">
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label">Description</label>
-                        <input asp-for="Description" type="text" class="form-control" placeholder="Description">
+                        <input asp-for="Description" type="text" class="form-control form-control-lg placeholder="Description">
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="ClubCategory" class="form-label">Club Category</label>
-                        <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-select">
+                        <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-select form-select-lg">
                             <option>--Select--</option>
                         </select>
                         <span asp-validation-for="ClubCategory" class="text-danger"></span>
@@ -36,31 +36,34 @@
 
                     <div class="mb-3">
                         <label asp-for="Address.Street" class="form-label">Street</label>
-                        <input asp-for="Address.Street" type="text" class="form-control" placeholder="Street">
+                        <input asp-for="Address.Street" type="text" class="form-control form-control-lg placeholder="Street">
                         <span asp-validation-for="Address.Street" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address.City" class="form-label">City</label>
-                        <input asp-for="Address.City" type="text" class="form-control" placeholder="City">
+                        <input asp-for="Address.City" type="text" class="form-control form-control-lg placeholder="City">
                         <span asp-validation-for="Address.City" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address.State" class="form-label">State</label>
-                        <input asp-for="Address.State" type="text" class="form-control" placeholder="State">
+                        <input asp-for="Address.State" type="text" class="form-control form-control-lg placeholder="State">
                         <span asp-validation-for="Address.State" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Image" class="form-label">Image</label>
-                        <input asp-for="Image" type="file" class="form-control" placeholder="Image">
+                        <input asp-for="Image" type="file" class="form-control form-control-lg placeholder="Image">
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-primary me-2">Submit</button>
-                        <a asp-controller="Club" asp-action="Index" type="button" class="btn btn-secondary">Back</a>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <a asp-controller="Club" asp-action="Index">Back</a>
                     </div>
                 </form>
             </div>

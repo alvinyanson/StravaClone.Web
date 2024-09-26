@@ -100,7 +100,7 @@ namespace StravaClone.Web.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Race");
+            return View(nameof(Login));
         }
 
     }

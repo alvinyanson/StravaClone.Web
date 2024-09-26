@@ -11,7 +11,7 @@
 
 
 <div class="row justify-content-center">
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-4">
         @if (TempData["Error"] != null)
         {
             <div class="col-md-12 alert alert-danger">
@@ -22,24 +22,32 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
                 <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
+                <input asp-for="EmailAddress" class="form-control form-control-lg" />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control form-control-lg" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" class="form-control form-control-lg />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <button class="btn btn-primary me-2" type="submit">Sign up</button>
+                <button class="btn btn-primary btn-lg w-100" type="submit">Sign up</button>
+            </div>
+            <div class="mb-3 text-center">
                 <a asp-controller="Account" asp-action="Login">Already have an account</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

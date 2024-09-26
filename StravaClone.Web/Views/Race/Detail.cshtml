@@ -12,23 +12,56 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <img class="img-fluid" src="@Model.Image" alt="">
+            <div class="col-md-5">
+                <img class="img-thumbnail" src="@Model.Image" alt="">
             </div>
 
-            <div class="col-md-4">
-                <h3 class="my-3">Details</h3>
-                <ul>
-                    <li>@Model.Address.City</li>
-                    <li>@Model.Address.State</li>
-                    <li>@Model.StartTime</li>
-                    <li>@Model.EntryFee</li>
-                    <li>@Model.Website</li>
-                    <li>@Model.Twitter</li>
-                    <li>@Model.Facebook</li>
-                    <li>@Model.Contact</li>
-                    <li>@Model.RaceCategory</li>
-                </ul>
+            <div class="col-md-7">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Street</th>
+                            <td>@Model.Address.Street</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">City</th>
+                            <td>@Model.Address.City</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">State</th>
+                            <td>@Model.Address.State</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">StartTime</th>
+                            <td>@Model.StartTime</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">EntryFee</th>
+                            <td>@(Model.EntryFee)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Website</th>
+                            <td>@(Model.Website ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Twitter</th>
+                            <td>@(Model.Twitter ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Facebook</th>
+                            <td>@(Model.Facebook ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact</th>
+                            <td>@(Model.Contact ?? "-")</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">RaceCategory</th>
+                            <td>@Model.RaceCategory</td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <a asp-controller="Race" asp-action="Index">Back</a>
             </div>
         </div>

@@ -12,24 +12,24 @@
 <section>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-7">
+            <div class="col-12 col-md-5">
                 <form>
                     <input type="hidden" asp-for="AddressId" />
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label">Title</label>
-                        <input readonly asp-for="Title" type="text" class="form-control" placeholder="Title">
+                        <input readonly asp-for="Title" type="text" class="form-control form-control-lg placeholder="Title">
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label">Description</label>
-                        <input readonly asp-for="Description" type="text" class="form-control" placeholder="Description">
+                        <input readonly asp-for="Description" type="text" class="form-control form-control-lg placeholder="Description">
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="ClubCategory" class="form-label">Club Category</label>
-                        <select disabled asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-select">
+                        <select disabled asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" class="form-select form-select-lg">
                             <option>--Select--</option>
                         </select>
                         <span asp-validation-for="ClubCategory" class="text-danger"></span>
@@ -37,25 +37,25 @@
 
                     <div class="mb-3">
                         <label asp-for="Address.Street" class="form-label">Street</label>
-                        <input readonly asp-for="Address.Street" type="text" class="form-control" placeholder="Street">
+                        <input readonly asp-for="Address.Street" type="text" class="form-control form-control-lg placeholder="Street">
                         <span asp-validation-for="Address.Street" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address.City" class="form-label">City</label>
-                        <input readonly asp-for="Address.City" type="text" class="form-control" placeholder="City">
+                        <input readonly asp-for="Address.City" type="text" class="form-control form-control-lg placeholder="City">
                         <span asp-validation-for="Address.City" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address.State" class="form-label">State</label>
-                        <input readonly asp-for="Address.State" type="text" class="form-control" placeholder="State">
+                        <input readonly asp-for="Address.State" type="text" class="form-control form-control-lg placeholder="State">
                         <span asp-validation-for="Address.State" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Image" class="form-label">Image</label>
-                        <input readonly asp-for="Image" type="file" class="form-control" placeholder="Image">
+                        <input readonly asp-for="Image" type="file" class="form-control form-control-lg placeholder="Image">
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
                 </form>
@@ -63,9 +63,12 @@
                 <div class="mb-3">
                     <form method="post" asp-action="DeleteClub">
                         <input type="hidden" asp-for="Id" />
-                        <button type="submit" class="btn btn-danger me-2">Confirm Delete</button>
-                        <a asp-controller="Club" asp-action="Index" type="button" class="btn btn-secondary">Back</a>
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Confirm Delete</button>
                     </form>
+                </div>
+
+                <div action="mb-3 text-center">
+                    <a asp-controller="Club" asp-action="Index">Back</a>
                 </div>
             </div>
         </div>
