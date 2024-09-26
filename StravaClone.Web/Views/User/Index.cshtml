@@ -1,19 +1,52 @@
 ﻿@model List<UserViewModel>
 
-
-<div class="row">
-    @foreach(var user in Model)
-    {
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="@user.ProfileImageUrl" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">@user.Username</h5>
-                    <a class="btn btn-outline-primary" asp-controller="User" asp-action="Detail" asp-route-id="@user.Id">
-                        View Profile
-                    </a>
-                </div>
-            </div>
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Runners</h1>
+            <p class="lead text-muted">Meet the Pack: Connect, Inspire, and Grow with Fellow Runners!</p>
         </div>
-    }
-</div>
+    </div>
+</section>
+
+
+<section>
+    <div class="container">
+        <div class="row mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Runner</th>
+                        <th scope="col">Pace</th>
+                        <th scope="col">Mileage</th>
+                        <th scope="col">City</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var runner in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>
+                                    <img src="@(!string.IsNullOrEmpty(runner.ProfileImageUrl) ? runner.ProfileImageUrl : "https://placehold.co/200x200/EEE/31343C")" alt="profileimage" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                    <span class="ms-2">@runner.Username</span>
+                                </span>
+                            </td>
+                            <td>@runner.Pace</td>
+                            <td>@runner.MileAge</td>
+                            <td>@runner.City</td>
+                            <td>@runner.State</td>
+                            <td>
+                                <a asp-controller="User" asp-action="Detail" asp-route-id="@runner.Id">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

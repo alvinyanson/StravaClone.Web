@@ -6,5 +6,6 @@
         public string Username { get; set; }
         public int? Pace { get; set; }
         public int? MileAge { get; set; }
+        public string? ProfileImageUrl { get; set; }
     }
 }

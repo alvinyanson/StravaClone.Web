@@ -1,67 +1,73 @@
 ﻿@model EditUserDashboardViewModel
 
-<div class="row">
-    <div class="col-md-6 offset-3">
-        <p>
-            <h4>Edit Profile</h4>
-        </p>
 
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="EditUserProfile" enctype="multipart/form-data" method="post" class="row">
-                    <input type="hidden" id="Id" name="Id" asp-for="Id"/>
-                    <div class="col-6">
-                        <label asp-for="Image" class="form-label">Image</label>
-                        <input asp-for="Image" type="file" class="form-control" placeholder="Image">
-                        <span asp-validation-for="Image" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label asp-for="City">City:</label>
-                            <input asp-for="City" type="text" class="form-control form-control-lg" />
-                            <span asp-validation-for="City" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label asp-for="State">State:</label>
-                            <input asp-for="State" type="text" class="form-control form-control-lg" />
-                            <span asp-validation-for="State" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label asp-for="Pace">Pace:</label>
-                            <input asp-for="Pace" type="text" class="form-control form-control-lg" />
-                            <span asp-validation-for="Pace" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label asp-for="MileAge">Mileage:</label>
-                            <input asp-for="MileAge" type="text" class="form-control form-control-lg" />
-                            <span asp-validation-for="MileAge" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="about-me">About me:</label>
-                            <textarea class="form-control form-control-lg"
-                                      name="profileBio"
-                                      rows="4"
-                                      id="about-me"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit">Save changes</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Edit Profile</h1>
+            <p class="lead text-muted">Edit Your Profile to Reflect Your Journey and Inspire Others!</p>
         </div>
     </div>
-</div>
+</section>
+
+<section>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-7">
+            <form asp-action="EditUserProfile" enctype="multipart/form-data" method="post" class="row">
+                <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Image" class="form-label">Image</label>
+                    <input asp-for="Image" type="file" class="form-control" placeholder="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label asp-for="City">City:</label>
+                        <input asp-for="City" type="text" class="form-control form-control-lg" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label asp-for="State">State:</label>
+                        <input asp-for="State" type="text" class="form-control form-control-lg" />
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label asp-for="Pace">Pace:</label>
+                        <input asp-for="Pace" type="text" class="form-control form-control-lg" />
+                        <span asp-validation-for="Pace" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label asp-for="MileAge">Mileage:</label>
+                        <input asp-for="MileAge" type="text" class="form-control form-control-lg" />
+                        <span asp-validation-for="MileAge" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label for="about-me">About me:</label>
+                        <textarea class="form-control form-control-lg"
+                                  name="profileBio"
+                                  rows="4"
+                                  id="about-me"></textarea>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
 
 

@@ -28,7 +28,9 @@ namespace StravaClone.Web.Controllers
                     Username = user.UserName,
                     Pace = user.Pace,
                     MileAge = user.MileAge,
-                    ProfileImageUrl = user.ProfileImageUrl
+                    ProfileImageUrl = user.ProfileImageUrl,
+                    City = user.City,
+                    State = user.State,
                 };
 
                 result.Add(userViewModel);
@@ -48,7 +50,8 @@ namespace StravaClone.Web.Controllers
                 Id = user.Id,
                 Username = user.UserName,
                 Pace = user.Pace,
-                MileAge = user.MileAge
+                MileAge = user.MileAge,
+                ProfileImageUrl = user.ProfileImageUrl,
             };
 
             return View(userDetailViewModel);
