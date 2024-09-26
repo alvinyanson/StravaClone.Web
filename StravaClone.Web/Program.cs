@@ -25,12 +25,19 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddMemoryCache();
-builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
 builder.Services.AddHttpClient<IIPInfoService, IPInfoService>();
+
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder =>
+        builder.Expire(TimeSpan.FromSeconds(60)));
+    options.AddPolicy("Expire20", builder =>
+        builder.Expire(TimeSpan.FromSeconds(20)));
+});
+
 
 var app = builder.Build();
 

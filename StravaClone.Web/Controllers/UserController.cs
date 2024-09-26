@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.ViewModels;
 
@@ -16,6 +17,7 @@ namespace StravaClone.Web.Controllers
         }
 
         [HttpGet("users")]
+        [OutputCache(PolicyName = "Expire20")]
         public async Task<IActionResult> Index()
         {
             var users = await _unitOfWork.User.GetAllUsers();
