@@ -1,31 +1,25 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
-using Newtonsoft.Json;
-using StravaClone.Web.Helpers;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
 using StravaClone.Web.ViewModels;
 using System.Diagnostics;
-using System.Globalization;
-using System.Net;
 
 namespace StravaClone.Web.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IIPInfoService _IPInfoService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IIPInfoService _iPInfoService;
 
         public HomeController(
-            ILogger<HomeController> logger,
-            IUnitOfWork unitOfWork,
-            IIPInfoService iPInfoService)
+            IIPInfoService IPInfoService,
+            IUnitOfWork unitOfWork
+            )
         {
+            _IPInfoService = IPInfoService;
             _unitOfWork = unitOfWork;
-            _logger = logger;
-            _iPInfoService = iPInfoService;
         }
 
         public async Task<IActionResult> Index()
@@ -34,19 +28,18 @@ namespace StravaClone.Web.Controllers
 
             try
             {
-                var info = await _iPInfoService.GetIPInfo();
+                var info = await _IPInfoService.GetIPInfo();
 
                 homeViewModel.City = info.City;
                 homeViewModel.State = info.Region;
 
                 if (homeViewModel.City != null)
-                {
+
                     homeViewModel.Clubs = await _unitOfWork.Club.GetClubsByCityAsync(homeViewModel.City);
-                }
+                
                 else
-                {
+                
                     homeViewModel.Clubs = null;
-                }
 
                 return View(homeViewModel);
             }
@@ -55,11 +48,6 @@ namespace StravaClone.Web.Controllers
                 homeViewModel.Clubs = null;
             }
 
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 

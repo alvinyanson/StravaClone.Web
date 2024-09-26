@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Data;
@@ -7,24 +8,25 @@ using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public AccountController(
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager
+            SignInManager<AppUser> signInManager,
+            UserManager<AppUser> userManager
             )
         {
-            _userManager = userManager;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
-        [HttpGet]
         public IActionResult Login()
         {
             var response = new LoginViewModel();
+
             return View(response);
         }
 
@@ -94,7 +96,6 @@ namespace StravaClone.Web.Controllers
             return RedirectToAction("Index", "Race");
         }
 
-        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

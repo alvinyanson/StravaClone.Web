@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using StravaClone.Web.Interfaces;
@@ -6,17 +7,16 @@ using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
+    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(
-            IUnitOfWork unitOfWork)
+        public UserController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("users")]
         [OutputCache(PolicyName = "Expire20")]
         public async Task<IActionResult> Index()
         {
@@ -34,20 +34,11 @@ namespace StravaClone.Web.Controllers
             return View(result);
         }
 
-
-        [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _unitOfWork.User.GetUserById(id);
 
-            var userDetailViewModel = new UserDetailViewModel()
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                Pace = user.Pace,
-                MileAge = user.MileAge,
-                ProfileImageUrl = user.ProfileImageUrl,
-            };
+            var userDetailViewModel = user.Adapt<UserDetailViewModel>();
 
             return View(userDetailViewModel);
         }

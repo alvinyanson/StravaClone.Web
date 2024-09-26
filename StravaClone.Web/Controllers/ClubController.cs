@@ -8,22 +8,25 @@ using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
+    [Authorize]
     public class ClubController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IPhotoService _photoService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPhotoService _photoService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ClubController(
-            IUnitOfWork unitOfWork,
+            IHttpContextAccessor httpContextAccessor,
             IPhotoService photoService,
-            IHttpContextAccessor httpContextAccessor)
+            IUnitOfWork unitOfWork
+            )
         {
-            _unitOfWork = unitOfWork;
-            _photoService = photoService;
             _httpContextAccessor = httpContextAccessor;
+            _photoService = photoService;
+            _unitOfWork = unitOfWork;
         }
 
+        [AllowAnonymous]
         [OutputCache(PolicyName = "Expire20")]
         public async Task<IActionResult> Index()
         {
@@ -32,6 +35,7 @@ namespace StravaClone.Web.Controllers
             return View(clubs);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
             var club = await _unitOfWork.Club.GetByIdAsync(id);

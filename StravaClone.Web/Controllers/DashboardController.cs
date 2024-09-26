@@ -1,11 +1,12 @@
-﻿using CloudinaryDotNet.Actions;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
-using StravaClone.Web.Models;
 using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -13,27 +14,16 @@ namespace StravaClone.Web.Controllers
         private readonly IUnitOfWork _unitOfWork;
 
         public DashboardController(
-            IUnitOfWork unitOfWork,
             IHttpContextAccessor httpContextAccessor,
-            IPhotoService photoService)
+            IPhotoService photoService,
+            IUnitOfWork unitOfWork
+            )
         {
-            _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
+            _unitOfWork = unitOfWork;
         }
 
-        private void MapUserEdit(AppUser user, EditUserDashboardViewModel editVM, ImageUploadResult photoResult)
-        {
-            user.Id = editVM.Id;
-            user.Pace = editVM.Pace;
-            user.MileAge = editVM.MileAge;
-            user.ProfileImageUrl = photoResult.Url.ToString();
-            user.City = editVM.City;
-            user.State = editVM.State;
-        }
-
-
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
@@ -59,15 +49,7 @@ namespace StravaClone.Web.Controllers
 
             if (user == null) return View("Error");
 
-            var editUserViewModel = new EditUserDashboardViewModel()
-            {
-                Id = userId,
-                Pace = user.Pace,
-                MileAge = user.MileAge,
-                ProfileImageUrl = user.ProfileImageUrl,
-                City = user.City,
-                State = user.State,
-            };
+            var editUserViewModel = user.Adapt<EditUserDashboardViewModel>();
 
             return View(editUserViewModel);
         }
@@ -87,17 +69,12 @@ namespace StravaClone.Web.Controllers
 
             if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
             {
-                MapUserEdit(user, request, photoResult);
+                user.Adapt(request);
+                user.ProfileImageUrl = photoResult.Url.ToString();
+
                 _unitOfWork.Dashboard.Update(user);
 
                 return RedirectToAction(nameof(Index));
-
-                //// Optimistic concurrency  - "Tracking error"
-                //// Use No Tracking
-                //var userTracking = new AppUser()
-                //{
-
-                //};
             }
             else
             {
@@ -111,7 +88,9 @@ namespace StravaClone.Web.Controllers
                     return View(request);
                 }
 
-                MapUserEdit(user, request, photoResult);
+                user.Adapt(request);
+
+                user.ProfileImageUrl = photoResult.Url.ToString();
 
                 _unitOfWork.Dashboard.Update(user);
 

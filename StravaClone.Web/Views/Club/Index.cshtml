@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Club>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+@model IEnumerable<Club>
 
 
 <section class="py-5 text-center container">
@@ -23,8 +26,11 @@
                             <p class="card-text mb-auto">@club.Description</p>
                             <div class="d-flex">
                                 <a asp-controller="Club" asp-action="Detail" asp-route-id="@club.Id">View</a>
-                                <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="mx-3">Edit</a>
-                                <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id">Delete</a>
+                                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                {
+                                    <a asp-controller="Club" asp-action="Edit" asp-route-id="@club.Id" class="mx-3">Edit</a>
+                                    <a asp-controller="Club" asp-action="Delete" asp-route-id="@club.Id">Delete</a>
+                                }
                             </div>
                         </div>
                         <div class="col-auto d-none d-lg-block">

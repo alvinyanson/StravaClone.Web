@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using StravaClone.Web.Interfaces;
@@ -7,22 +8,24 @@ using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {
+    [Authorize]
     public class RaceController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IPhotoService _photoService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPhotoService _photoService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RaceController(
-            IUnitOfWork unitOfWork,
+            IHttpContextAccessor httpContextAccessor,
             IPhotoService photoService,
-            IHttpContextAccessor httpContextAccessor)
+            IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _photoService = photoService;
             _httpContextAccessor = httpContextAccessor;
+            _photoService = photoService;
+            _unitOfWork = unitOfWork;
         }
 
+        [AllowAnonymous]
         [OutputCache(PolicyName = "Expire20")]
         public async Task<IActionResult> Index()
         {
@@ -31,6 +34,7 @@ namespace StravaClone.Web.Controllers
             return View(races);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
             var club = await _unitOfWork.Race.GetByIdAsync(id);
@@ -96,9 +100,7 @@ namespace StravaClone.Web.Controllers
             var userClub = await _unitOfWork.Race.GetByIdAsyncNoTracking(id);
 
             if (userClub == null)
-            {
                 return View(request);
-            }
 
             try
             {
@@ -120,12 +122,12 @@ namespace StravaClone.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var raceDetail = await _unitOfWork.Race.GetByIdAsync(id);
 
-            if (raceDetail == null) return View("Error");
+            if (raceDetail == null) 
+                return View("Error");
 
             return View(raceDetail);
         }
