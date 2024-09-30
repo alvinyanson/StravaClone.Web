@@ -1,9 +1,11 @@
 ﻿using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.Queries;
 using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
@@ -14,23 +16,28 @@ namespace StravaClone.Web.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPhotoService _photoService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
         public ClubController(
             IHttpContextAccessor httpContextAccessor,
             IPhotoService photoService,
-            IUnitOfWork unitOfWork
+            IUnitOfWork unitOfWork,
+            IMediator mediator
             )
         {
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         [AllowAnonymous]
         [OutputCache(PolicyName = "Expire20")]
         public async Task<IActionResult> Index()
         {
-            var clubs = await _unitOfWork.Club.GetAllAsync();
+            var query = new GetAllClubsQuery();
+
+            var clubs = await _mediator.Send(query);
 
             return View(clubs);
         }
