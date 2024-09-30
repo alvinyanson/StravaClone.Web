@@ -69,7 +69,10 @@ namespace StravaClone.Web.Controllers
 
             if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
             {
-                user.Adapt(request);
+                user.Pace = request.Pace;
+                user.MileAge = request.MileAge;
+                user.City = request.City;
+                user.State = request.State;
                 user.ProfileImageUrl = photoResult.Url.ToString();
 
                 _unitOfWork.Dashboard.Update(user);
@@ -88,8 +91,10 @@ namespace StravaClone.Web.Controllers
                     return View(request);
                 }
 
-                user.Adapt(request);
-
+                user.Pace = request.Pace;
+                user.MileAge = request.MileAge;
+                user.City = request.City;
+                user.State = request.State;
                 user.ProfileImageUrl = photoResult.Url.ToString();
 
                 _unitOfWork.Dashboard.Update(user);

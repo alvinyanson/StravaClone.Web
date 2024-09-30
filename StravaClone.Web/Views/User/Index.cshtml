@@ -13,40 +13,39 @@
 <section>
     <div class="container">
         <div class="row mb-2">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Runner</th>
-                        <th scope="col">Pace</th>
-                        <th scope="col">Mileage</th>
-                        <th scope="col">City</th>
-                        <th scope="col">State</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var runner in Model)
-                    {
-                        <tr>
-                            <td>
-                                <span>
-                                    <img src="@(!string.IsNullOrEmpty(runner.ProfileImageUrl) ? runner.ProfileImageUrl : "https://placehold.co/200x200/EEE/31343C")" alt="profileimage" width="32" height="32" class="rounded-circle flex-shrink-0">
-                                    <span class="ms-2">@runner.UserName</span>
-                                </span>
-                            </td>
-                            <td>@runner.Pace</td>
-                            <td>@runner.MileAge</td>
-                            <td>@runner.City</td>
-                            <td>@runner.State</td>
-                            <td>
-                                <a asp-controller="User" asp-action="Detail" asp-route-id="@runner.Id">
-                                    View
+            @foreach (var runner in Model)
+            {
+                <div class="col-12 col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <a asp-controller="User" asp-action="Detail" asp-route-id="@runner.Id" class="me-3">
+                                    <img alt="@runner.UserName" src="@(!string.IsNullOrEmpty(runner.ProfileImageUrl) ? runner.ProfileImageUrl : "https://placehold.co/80x80/EEE/31343C")" width="80" height="80">
                                 </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                <div class="media-body">
+                                    <div>
+                                        <a asp-controller="User" asp-action="Detail" asp-route-id="@runner.Id" class="h5 m-0">
+                                            <h5>@runner.UserName</h5>
+                                        </a>
+                                        <small class="text-muted"><i class="icon-location"></i> @runner.City, @runner.State</small>
+                                    </div>
+                                    <ul class="list-inline">
+
+                                        <li class="list-inline-item text-small">@runner.MileAge miles </li>
+
+                                        <li class="list-inline-item text-small">@runner.Pace mph</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <a class="text-small" asp-controller="User" asp-action="Detail" asp-route-id="@runner.Id">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </section>
