@@ -3,7 +3,7 @@ using StravaClone.Web.Models;
 
 namespace StravaClone.Web.Queries
 {
-    public class GetAllClubsQuery : IRequest<IEnumerable<Club>>
+    public record GetAllClubsQuery : IRequest<IEnumerable<Club>>
     {
     }
 }

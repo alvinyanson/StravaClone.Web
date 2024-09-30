@@ -1,7 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.Queries;
 using StravaClone.Web.ViewModels;
 using System.Diagnostics;
 
@@ -12,43 +14,26 @@ namespace StravaClone.Web.Controllers
     {
         private readonly IIPInfoService _IPInfoService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
         public HomeController(
             IIPInfoService IPInfoService,
-            IUnitOfWork unitOfWork
+            IUnitOfWork unitOfWork,
+            IMediator mediator
             )
         {
             _IPInfoService = IPInfoService;
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> Index()
         {
-            var homeViewModel = new HomeViewModel();
+            var query = new GetAllClubsNearMeQuery();
 
-            try
-            {
-                var info = await _IPInfoService.GetIPInfo();
+            var clubsNearMe = await _mediator.Send(query);
 
-                homeViewModel.City = info.City;
-                homeViewModel.State = info.Region;
-
-                if (homeViewModel.City != null)
-
-                    homeViewModel.Clubs = await _unitOfWork.Club.GetClubsByCityAsync(homeViewModel.City);
-                
-                else
-                
-                    homeViewModel.Clubs = null;
-
-                return View(homeViewModel);
-            }
-            catch (Exception ex)
-            {
-                homeViewModel.Clubs = null;
-            }
-
-            return View();
+            return View(clubsNearMe);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
