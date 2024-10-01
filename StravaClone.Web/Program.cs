@@ -1,3 +1,4 @@
+using MediatR.NotificationPublishers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,11 +40,15 @@ builder.Services.AddOutputCache(options =>
 });
 
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(config =>
+    {
+        config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+        config.NotificationPublisher = new TaskWhenAllPublisher();
+    });
 
 var app = builder.Build();
 
-if(args.Length == 1 && args[0].ToLower() == "seeddata")
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
     await Seed.SeedUsersAndRolesAsync(app);
     Seed.SeedData(app);

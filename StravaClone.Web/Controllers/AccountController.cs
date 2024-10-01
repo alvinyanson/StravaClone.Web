@@ -1,8 +1,10 @@
 ﻿using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Data;
+using StravaClone.Web.Events;
 using StravaClone.Web.Models;
 using StravaClone.Web.ViewModels;
 
@@ -13,14 +15,17 @@ namespace StravaClone.Web.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMediator _mediator;
 
         public AccountController(
             SignInManager<AppUser> signInManager,
-            UserManager<AppUser> userManager
+            UserManager<AppUser> userManager,
+            IMediator mediator
             )
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         public IActionResult Login()
@@ -91,6 +96,8 @@ namespace StravaClone.Web.Controllers
             if (newUserResponse.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+
+                await _mediator.Publish(new UserSignUpEvent(newUser.Id));
             }
 
             return RedirectToAction("Index", "Race");
