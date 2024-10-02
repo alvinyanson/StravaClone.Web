@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using StravaClone.Web.Interfaces;
-using StravaClone.Web.Queries;
+using StravaClone.Web.Queries.Clubs;
 using StravaClone.Web.ViewModels;
 
-namespace StravaClone.Web.Handlers
+namespace StravaClone.Web.Handlers.Clubs
 {
     public class GetAllClubsNearMeHandler : IRequestHandler<GetAllClubsNearMeQuery, HomeViewModel>
     {

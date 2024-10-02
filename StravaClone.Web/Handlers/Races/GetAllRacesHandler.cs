@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
-using StravaClone.Web.Queries;
+using StravaClone.Web.Queries.Races;
 
-namespace StravaClone.Web.Handlers
+namespace StravaClone.Web.Handlers.Races
 {
     public class GetAllRacesHandler : IRequestHandler<GetAllRacesQuery, IEnumerable<Race>>
     {

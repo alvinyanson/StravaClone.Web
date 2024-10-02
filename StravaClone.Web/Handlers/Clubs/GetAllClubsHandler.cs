@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
-using StravaClone.Web.Queries;
-using StravaClone.Web.Repository;
+using StravaClone.Web.Queries.Clubs;
 
-namespace StravaClone.Web.Handlers
+namespace StravaClone.Web.Handlers.Clubs
 {
     public class GetAllClubsHandler : IRequestHandler<GetAllClubsQuery, IEnumerable<Club>>
     {

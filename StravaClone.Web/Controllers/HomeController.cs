@@ -1,10 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
-using StravaClone.Web.Queries;
-using StravaClone.Web.ViewModels;
+using StravaClone.Web.Queries.Clubs;
 using System.Diagnostics;
 
 namespace StravaClone.Web.Controllers
@@ -12,21 +10,16 @@ namespace StravaClone.Web.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IIPInfoService _IPInfoService;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
         public HomeController(
-            IIPInfoService IPInfoService,
-            IUnitOfWork unitOfWork,
             IMediator mediator
             )
         {
-            _IPInfoService = IPInfoService;
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var query = new GetAllClubsNearMeQuery();

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string currentArea = ViewContext.RouteData.Values["area"]?.ToString();
+    string currentController = ViewContext.RouteData.Values["controller"].ToString();
+    string currentAction = ViewContext.RouteData.Values["action"].ToString();
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,23 +25,23 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Clubs Near Me</a>
+                            <a class="nav-link @(currentController == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Clubs Near Me</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                <a class="nav-link @(currentController == "Dashboard" ? "active" : "")" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Runners</a>
+                            <a class="nav-link @(currentController == "User" ? "active" : "")" asp-area="" asp-controller="User" asp-action="Index">Runners</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Club" asp-action="Index">Clubs</a>
+                            <a class="nav-link @(currentController == "Club" ? "active" : "")" asp-area="" asp-controller="Club" asp-action="Index">Clubs</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Race" asp-action="Index">Races</a>
+                            <a class="nav-link @(currentController == "Race" ? "active" : "")" asp-area="" asp-controller="Race" asp-action="Index">Races</a>
                         </li>
                     </ul>
 
@@ -44,9 +51,9 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Account</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Club" asp-action="Create">Create Club</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Race" asp-action="Create">Create Race</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="EditUserProfile">My Profile</a>
+                                    <a class="dropdown-item @(currentAction == "Create" && currentController == "Club" ? "active" : "")" asp-area="" asp-controller="Club" asp-action="Create">Create Club</a>
+                                    <a class="dropdown-item @(currentAction == "Create" && currentController == "Race" ? "active" : "")" asp-area="" asp-controller="Race" asp-action="Create">Create Race</a>
+                                    <a class="dropdown-item @(currentAction == "EditUserProfile" && currentController == "Dashboard" ? "active" : "")" asp-area="" asp-controller="Dashboard" asp-action="EditUserProfile">My Profile</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                                 </div>
                             </li>

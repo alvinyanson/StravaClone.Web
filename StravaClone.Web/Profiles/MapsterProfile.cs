@@ -20,6 +20,7 @@ namespace StravaClone.Web.Profiles
             config.NewConfig<RegisterViewModel, AppUser>()
                 .Map(dest => dest.UserName, src => src.EmailAddress)
                 .Map(dest => dest.Email, src => src.EmailAddress);
+
         }
     }
 }

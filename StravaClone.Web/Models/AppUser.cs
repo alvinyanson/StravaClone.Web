@@ -10,9 +10,6 @@ namespace StravaClone.Web.Models
         public string? ProfileImageUrl { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
-        [ForeignKey(nameof(Address))]
-        public int? AddressId { get; set; }
-        public Address? Address { get; set; }
         public ICollection<Club>? Clubs { get; set; }
         public ICollection<Race>? Races { get; set; }
     }

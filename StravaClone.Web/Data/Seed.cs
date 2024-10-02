@@ -318,12 +318,6 @@ namespace StravaClone.Web.Data
                         UserName = "admin.user",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
-                        Address = new Address()
-                        {
-                            Street = "123 Main St",
-                            City = "Charlotte",
-                            State = "NC"
-                        }
                     };
                     await userManager.CreateAsync(newAdminUser, "Test@123");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -338,13 +332,7 @@ namespace StravaClone.Web.Data
                     {
                         UserName = "alvin",
                         Email = appUserEmail,
-                        EmailConfirmed = true,
-                        Address = new Address()
-                        {
-                            Street = "123 Main St",
-                            City = "Charlotte",
-                            State = "NC"
-                        }
+                        EmailConfirmed = true
                     };
                     await userManager.CreateAsync(newAppUser, "Test@123");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);

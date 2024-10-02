@@ -1,7 +1,8 @@
-﻿using Mapster;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StravaClone.Web.Interfaces;
+using StravaClone.Web.Commands.Dashboard;
+using StravaClone.Web.Queries.Dashboard;
 using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
@@ -9,49 +10,32 @@ namespace StravaClone.Web.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IPhotoService _photoService;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        public DashboardController(
-            IHttpContextAccessor httpContextAccessor,
-            IPhotoService photoService,
-            IUnitOfWork unitOfWork
-            )
+        public DashboardController(IMediator mediator)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _photoService = photoService;
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var currentUser = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var query = new GetMyRacesAndClubsQuery();
+            var result = await _mediator.Send(query);
 
-            var userRaces = await _unitOfWork.Dashboard.GetAllUserRaces(currentUser.ToString());
-            var userClubs = await _unitOfWork.Dashboard.GetAllUserClubs(currentUser.ToString());
-
-            var dashboardVM = new DashboardViewModel
-            {
-                Races = userRaces,
-                Clubs = userClubs,
-            };
-
-            return View(dashboardVM);
+            return View(result);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> EditUserProfile()
         {
-            var userId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var query = new GetProfileQuery();
+            var result = await _mediator.Send(query);
 
-            var user = await _unitOfWork.Dashboard.GetUserById(userId);
+            if (result == null) 
+                return View("Error");
 
-            if (user == null) return View("Error");
-
-            var editUserViewModel = user.Adapt<EditUserDashboardViewModel>();
-
-            return View(editUserViewModel);
+            return View(result);
         }
 
         [HttpPost]
@@ -63,44 +47,16 @@ namespace StravaClone.Web.Controllers
                 return View(request);
             }
 
-            var user = await _unitOfWork.Dashboard.GetByIdNoTracking(request.Id);
-            
-            var photoResult = await _photoService.AddPhotoAsync(request.Image);
+            var query = new EditProfileRequest(request);
+            var result = await _mediator.Send(query);
 
-            if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
+            if(!result.Success)
             {
-                user.Pace = request.Pace;
-                user.MileAge = request.MileAge;
-                user.City = request.City;
-                user.State = request.State;
-                user.ProfileImageUrl = photoResult.Url.ToString();
-
-                _unitOfWork.Dashboard.Update(user);
-
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", result.ErrorMessage);
+                return View(request);
             }
-            else
-            {
-                try
-                {
-                    await _photoService.DeletePhotoAsync(user.ProfileImageUrl);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Could not delete photo");
-                    return View(request);
-                }
 
-                user.Pace = request.Pace;
-                user.MileAge = request.MileAge;
-                user.City = request.City;
-                user.State = request.State;
-                user.ProfileImageUrl = photoResult.Url.ToString();
-
-                _unitOfWork.Dashboard.Update(user);
-
-                return RedirectToAction(nameof(Index));
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

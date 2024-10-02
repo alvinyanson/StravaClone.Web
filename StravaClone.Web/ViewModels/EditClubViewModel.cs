@@ -17,5 +17,6 @@ namespace StravaClone.Web.ViewModels
         public int? AddressId { get; set; }
         public Address? Address { get; set; }
         public ClubCategory ClubCategory { get; set; }
+        public string AppUserId { get; set; }
     }
 }

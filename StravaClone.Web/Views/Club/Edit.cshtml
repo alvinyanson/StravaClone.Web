@@ -14,6 +14,7 @@
             <div class="col-12 col-md-5">
                 <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" asp-for="AddressId" />
+                    <input type="hidden" asp-for="AppUserId"/>
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label">Title</label>
                         <input asp-for="Title" type="text" class="form-control form-control-lg placeholder="Title">

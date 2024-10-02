@@ -3,9 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using StravaClone.Web.Interfaces;
-using StravaClone.Web.Models;
-using StravaClone.Web.Queries;
+using StravaClone.Web.Commands.Club;
+using StravaClone.Web.Queries.Clubs;
 using StravaClone.Web.ViewModels;
 
 namespace StravaClone.Web.Controllers
@@ -14,20 +13,14 @@ namespace StravaClone.Web.Controllers
     public class ClubController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IPhotoService _photoService;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
         public ClubController(
             IHttpContextAccessor httpContextAccessor,
-            IPhotoService photoService,
-            IUnitOfWork unitOfWork,
             IMediator mediator
             )
         {
             _httpContextAccessor = httpContextAccessor;
-            _photoService = photoService;
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
@@ -36,18 +29,19 @@ namespace StravaClone.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var query = new GetAllClubsQuery();
+            var result = await _mediator.Send(query);
 
-            var clubs = await _mediator.Send(query);
-
-            return View(clubs);
+            return View(result);
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            var club = await _unitOfWork.Club.GetByIdAsync(id);
+            var query = new GetClubDetailQuery(id);
+            var result = await _mediator.Send(query);
 
-            return View(club);
+            return View(result);
         }
 
         public IActionResult Create()
@@ -67,30 +61,27 @@ namespace StravaClone.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _photoService.AddPhotoAsync(request.Image);
-
-                var club = request.Adapt<Club>();
-                club.Image = result.Url.ToString();
-
-                _unitOfWork.Club.Add(club);
-
+                var query = new CreateClubRequest(request);
+                var result = await _mediator.Send(query);
+                
                 return RedirectToAction(nameof(Index));
             }
             else
-            {
                 ModelState.AddModelError("", "Photo Upload Failed");
-            }
 
             return View(request);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var club = await _unitOfWork.Club.GetByIdAsync(id);
+            var query = new GetClubDetailQuery(id);
+            var result = await _mediator.Send(query);
 
-            if (club == null) return View("Error");
+            if (result == null) 
+                return View("Error");
 
-            var clubVM = club.Adapt<EditClubViewModel>();
+            var clubVM = result.Adapt<EditClubViewModel>();
 
             return View(clubVM);
         }
@@ -104,29 +95,14 @@ namespace StravaClone.Web.Controllers
                 return View(nameof(Edit), request);
             }
 
-            var userClub = await _unitOfWork.Club.GetByIdAsyncNoTracking(id);
+            var query = new EditClubRequest(request);
+            var result = await _mediator.Send(query);
 
-            if (userClub == null)
+            if(!result.Success)
             {
-                return View(request);
+                ModelState.AddModelError("", result.ErrorMessage!);
+                return View(nameof(Edit), request);
             }
-
-            try
-            {
-                await _photoService.DeletePhotoAsync(userClub.Image);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Could not delete photo");
-                return View(request);
-            }
-
-            var photoResult = await _photoService.AddPhotoAsync(request.Image);
-
-            var club = request.Adapt<Club>();
-            club.Image = photoResult.Url.ToString();
-
-            _unitOfWork.Club.Update(club);
 
             return RedirectToAction(nameof(Index));
         }
@@ -134,21 +110,23 @@ namespace StravaClone.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var clubDetail = await _unitOfWork.Club.GetByIdAsync(id);
+            var query = new GetClubDetailQuery(id);
+            var result = await _mediator.Send(query);
 
-            if (clubDetail == null) return View("Error");
+            if(result == null)
+                return View("Error");
 
-            return View(clubDetail);
+            return View(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteClub(int id)
         {
-            var clubDetail = await _unitOfWork.Club.GetByIdAsync(id);
+            var query = new DeleteClubRequest(id);
+            var result = await _mediator.Send(query);
 
-            if (clubDetail == null) return View("Error");
-
-            _unitOfWork.Club.Delete(clubDetail);
+            if(!result)
+                return View("Error");
 
             return RedirectToAction(nameof(Index));
         }
