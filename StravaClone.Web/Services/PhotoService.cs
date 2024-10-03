@@ -1,8 +1,8 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
-using StravaClone.Web.Helpers;
 using StravaClone.Web.Interfaces;
+using StravaClone.Web.Options;
 
 namespace StravaClone.Web.Services
 {

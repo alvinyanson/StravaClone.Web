@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StravaClone.Web.Data;
-using StravaClone.Web.Helpers;
 using StravaClone.Web.Interfaces;
 using StravaClone.Web.Models;
+using StravaClone.Web.Options;
 using StravaClone.Web.Profiles;
 using StravaClone.Web.Repository;
 using StravaClone.Web.Services;
@@ -19,7 +19,8 @@ builder.Services.RegisterMapsterConfiguration();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings")); // allows us to have IOptions
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(CloudinarySettings.SectionName)); // allows me to have IOptions
+builder.Services.Configure<IPInfoSettings>(builder.Configuration.GetSection(IPInfoSettings.SectionName)); // allows me to have IOptions>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -28,6 +29,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddDefaultTokenProviders();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
+
+
+
 
 builder.Services.AddHttpClient<IIPInfoService, IPInfoService>();
 

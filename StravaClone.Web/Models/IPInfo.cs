@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace StravaClone.Web.Helpers
+namespace StravaClone.Web.Models
 {
     public class IPInfo
     {

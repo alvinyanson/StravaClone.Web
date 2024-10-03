@@ -1,4 +1,4 @@
-﻿using StravaClone.Web.Helpers;
+﻿using StravaClone.Web.Models;
 
 namespace StravaClone.Web.Interfaces
 {
