@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using MediatR;
 using StravaClone.Web.Commands.Races;
-using StravaClone.Web.Interfaces;
-using StravaClone.Web.Models;
+using StravaClone.DataService.Interfaces;
+using StravaClone.Entities.Models;
 
 namespace StravaClone.Web.Handlers.Races
 {

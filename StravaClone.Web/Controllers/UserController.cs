@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using StravaClone.Web.Interfaces;
-using StravaClone.Web.ViewModels;
+using StravaClone.DataService.Interfaces;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {

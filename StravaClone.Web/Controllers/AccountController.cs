@@ -3,10 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using StravaClone.Web.Data;
+using StravaClone.DataService.Data;
 using StravaClone.Web.Events;
-using StravaClone.Web.Models;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.Models;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StravaClone.Web.Commands.Dashboard;
 using StravaClone.Web.Queries.Dashboard;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Controllers
 {

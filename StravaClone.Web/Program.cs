@@ -2,12 +2,12 @@ using MediatR.NotificationPublishers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using StravaClone.Web.Data;
-using StravaClone.Web.Interfaces;
-using StravaClone.Web.Models;
-using StravaClone.Web.Options;
+using StravaClone.DataService.Data;
+using StravaClone.DataService.Interfaces;
+using StravaClone.Entities.Models;
+using StravaClone.Entities.Options;
 using StravaClone.Web.Profiles;
-using StravaClone.Web.Repository;
+using StravaClone.DataService.Repository;
 using StravaClone.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);

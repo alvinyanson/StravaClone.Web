@@ -1,7 +1,7 @@
 version: '3.4'
 
 networks:
- stravacloneapp: 
+ stravaclone: 
 
 services:
   stravaclone.db:
@@ -13,16 +13,16 @@ services:
     - ACCEPT_EULA=Y
     - SA_PASSWORD=Passw0rd
    networks:
-    - stravacloneapp
+    - stravaclone
   stravaclone.web:
     container_name: "stravaclone.web"
-    image: ${DOCKER_REGISTRY-}stravacloneweb
+    image: ${DOCKER_REGISTRY-}stravaclone.project
     build:
       context: .
-      dockerfile: StravaClone.Web/Dockerfile
+      dockerfile: Dockerfile
     ports:
-     - 8081:8081
+     - 3000:8080
     depends_on:
      - stravaclone.db
     networks:
-     - stravacloneapp
+     - stravaclone

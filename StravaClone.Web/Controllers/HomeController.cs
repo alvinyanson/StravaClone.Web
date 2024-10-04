@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StravaClone.Web.Models;
+using StravaClone.Entities.Models;
 using StravaClone.Web.Queries.Clubs;
 using System.Diagnostics;
 

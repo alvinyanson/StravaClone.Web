@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using StravaClone.Web.Interfaces;
+using StravaClone.DataService.Interfaces;
 using StravaClone.Web.Queries.Dashboard;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Handlers.Dashboard
 {

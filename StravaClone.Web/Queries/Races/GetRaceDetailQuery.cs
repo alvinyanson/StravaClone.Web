@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StravaClone.Web.Models;
+using StravaClone.Entities.Models;
 
 namespace StravaClone.Web.Queries.Races
 {

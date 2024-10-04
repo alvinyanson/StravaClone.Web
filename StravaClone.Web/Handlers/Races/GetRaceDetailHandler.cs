@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using StravaClone.Web.Interfaces;
-using StravaClone.Web.Models;
+using StravaClone.DataService.Interfaces;
+using StravaClone.Entities.Models;
 using StravaClone.Web.Queries.Races;
 
 namespace StravaClone.Web.Handlers.Races

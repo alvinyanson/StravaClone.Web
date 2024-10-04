@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Queries.Clubs
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using StravaClone.Web.Models;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.Models;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Commands.Races
 {

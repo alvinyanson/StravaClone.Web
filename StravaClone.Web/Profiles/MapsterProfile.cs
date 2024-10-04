@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Win32;
-using StravaClone.Web.Models;
-using StravaClone.Web.ViewModels;
+using StravaClone.Entities.Models;
+using StravaClone.Entities.ViewModels;
 
 namespace StravaClone.Web.Profiles
 {

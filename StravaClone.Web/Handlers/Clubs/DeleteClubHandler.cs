@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using StravaClone.Web.Commands.Club;
-using StravaClone.Web.Interfaces;
+using StravaClone.DataService.Interfaces;
 
 namespace StravaClone.Web.Handlers.Clubs
 {
