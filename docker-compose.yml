@@ -1,0 +1,28 @@
+version: '3.4'
+
+networks:
+ stravacloneapp: 
+
+services:
+  stravaclone.db:
+   container_name: "stravaclone.db"
+   image: mcr.microsoft.com/mssql/server:2022-latest
+   ports:
+    - 8082:1433
+   environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=Passw0rd
+   networks:
+    - stravacloneapp
+  stravaclone.web:
+    container_name: "stravaclone.web"
+    image: ${DOCKER_REGISTRY-}stravacloneweb
+    build:
+      context: .
+      dockerfile: StravaClone.Web/Dockerfile
+    ports:
+     - 8081:8081
+    depends_on:
+     - stravaclone.db
+    networks:
+     - stravacloneapp

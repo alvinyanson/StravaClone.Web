@@ -52,11 +52,11 @@ builder.Services.AddMediatR(config =>
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower() == "seeddata")
-{
-    await Seed.SeedUsersAndRolesAsync(app);
+//if (args.Length == 1 && args[0].ToLower() == "seeddata")
+//{
     Seed.SeedData(app);
-}
+    await Seed.SeedUsersAndRolesAsync(app);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
